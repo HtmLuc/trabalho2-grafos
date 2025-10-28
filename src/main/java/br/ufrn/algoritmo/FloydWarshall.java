@@ -50,7 +50,7 @@ public class FloydWarshall {
         final int n = pesos.length;
         final double INF = Double.POSITIVE_INFINITY;
 
-        double[][] dist = new double[n][n];
+        double[][] distancia = new double[n][n];
         int[][] proximo = new int[n][n];
 
         for (int i = 0; i < n; i++) {
@@ -58,7 +58,7 @@ public class FloydWarshall {
                 throw new IllegalArgumentException("Matriz de pesos deve ser n x n.");
             }
             for (int j = 0; j < n; j++) {
-                dist[i][j] = pesos[i][j];
+                distancia[i][j] = pesos[i][j];
                 if (i != j && pesos[i][j] < INF) {
                     proximo[i][j] = j;
                 } else {
@@ -69,13 +69,13 @@ public class FloydWarshall {
 
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
-                if (dist[i][k] == INF) continue;
+                if (distancia[i][k] == INF) continue;
                 for (int j = 0; j < n; j++) {
-                    if (dist[k][j] == INF) continue;
+                    if (distancia[k][j] == INF) continue;
 
-                    double viaK = dist[i][k] + dist[k][j];
-                    if (viaK < dist[i][j]) {
-                        dist[i][j] = viaK;
+                    double viaK = distancia[i][k] + distancia[k][j];
+                    if (viaK < distancia[i][j]) {
+                        distancia[i][j] = viaK;
                         proximo[i][j] = proximo[i][k];
                     }
                 }
@@ -84,13 +84,13 @@ public class FloydWarshall {
 
         boolean cicloNegativo = false;
         for (int v = 0; v < n; v++) {
-            if (dist[v][v] < 0.0) {
+            if (distancia[v][v] < 0.0) {
                 cicloNegativo = true;
                 break;
             }
         }
 
-        return new Resultado(dist, proximo, cicloNegativo);
+        return new Resultado(distancia, proximo, cicloNegativo);
     }
 
     public static double[][] matrizVazia(int n) {
